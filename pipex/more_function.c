@@ -6,11 +6,11 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:45:48 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/15 16:11:06 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/03/20 17:52:15 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "pipex.h"
 
 void	ft_putstr_fd(char *s, int fd)
 {
@@ -64,6 +64,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
