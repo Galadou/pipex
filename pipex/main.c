@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/28 10:13:52 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:01:32 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	**catch_path(char **envp)
 	y = 0;
 	if (!envp)
 	{
-		ft_putstr_fd("Error pipex : Envp is empty\n", 2);
+		ft_putstr_fd("Error pipex : Envp is empty\n", STDERR_FILENO);
 		exit (1);
 	}
 	i = 0;
@@ -54,7 +54,7 @@ static void	open_files(t_cmd *cmd, char **argv)
 	{
 		if (cmd->path)
 			free_tab(cmd->path);
-		ft_putstr_fd("Error\nFile error (in main.c l:52)\n", 2);
+		ft_putstr_fd("Error\nFile error (in main.c l:52)\n", STDERR_FILENO);
 		exit (1);
 	}
 	cmd->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -63,7 +63,7 @@ static void	open_files(t_cmd *cmd, char **argv)
 		close(cmd->infile);
 		if (cmd->path)
 			free_tab(cmd->path);
-		ft_putstr_fd("Error\nCannot open file (in main.c l:60)\n", 2);
+		ft_putstr_fd("Error\nCan't open file (main.c l:60)\n", STDERR_FILENO);
 		exit (1);
 	}
 }
@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char *envp[])
 
 	if (envp == NULL)
 	{
-		ft_putstr_fd("Error\nCannot find envp", 2);
+		ft_putstr_fd("Error\nCannot find envp", STDERR_FILENO);
 		exit (1);
 	}
 	cmd.path = catch_path(envp);

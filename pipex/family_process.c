@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:57 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/28 17:14:08 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/03/29 12:09:24 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 static void	child_process(int pipefd[2], t_cmd *cmd, char **envp)
 {
-	//dup2(cmd->infile, STDIN_FILENO);
+	dup2(cmd->infile, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	execve(cmd->good_path, cmd->cmd1, envp);
-	error_free_and_exit("Error\nExecve error at family_process.c l:24\n", cmd);
+	ultimate_free(cmd);
+	perror("First exec");
 }
 
 static void	child_process2(int pipefd[2], t_cmd *cmd, char **envp)
@@ -30,7 +31,8 @@ static void	child_process2(int pipefd[2], t_cmd *cmd, char **envp)
 		close(pipefd[0]);
 	if (pipefd[1])
 		close(pipefd[1]);
-	error_free_and_exit("Error\nExecve error at family_process.c l:41\n", cmd);
+	ultimate_free(cmd);
+	perror("Second exec");
 }
 
 static void	family_process_end(t_cmd *cmd, int pipefd[2])

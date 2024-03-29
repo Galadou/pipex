@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/28 09:47:56 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:02:08 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <stdio.h>
 
 typedef struct s_cmd_and_files
 {
