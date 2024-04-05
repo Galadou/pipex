@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:03:50 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:19:33 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(const char *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
-int	charchr(char *str);
+int		charchr(char *str);
 
 void	verif_arg_and_path(int argc, char **path, t_cmd *cmd);
 char	*path_1_creator(t_cmd *cmd);

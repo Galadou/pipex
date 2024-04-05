@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:11 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:04:23 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:19:23 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	charchr(char *str)
 	}
 	return (0);
 }
+
 void	init_struct(t_cmd *cmd)
 {
 	cmd->cmd1 = NULL;

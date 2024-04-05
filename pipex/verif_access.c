@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:33 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:07:40 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:18:56 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ char	*path_2_creator(t_cmd *cmd)
 	{
 		while (cmd->path[i] && (!good_path))
 		{
-			//if (good_path)
-				//free(good_path);
 			good_path = verif_access(cmd->cmd2[0], cmd->path, i);
 			if (good_path)
 				return (good_path);

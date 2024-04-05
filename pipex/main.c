@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/04 16:51:04 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:19:48 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static void	create_cmd_next(char **argv, t_cmd *cmd)
 		ft_putstr_fd("Error\nCommand One empty or not valid\n", STDERR_FILENO);
 		cmd->cmd1_error = 1;
 	}
-	//if (charchr(cmd->cmd1[0]) == 1)
 	x = 0;
 	while (argv[3][x])
 	{
@@ -90,7 +89,6 @@ static void	create_cmd_next(char **argv, t_cmd *cmd)
 	cmd->cmd2 = ft_split(argv[3], ' ');
 	if (ft_strlen(cmd->cmd2[0]) == 0 || !cmd->cmd2)
 		error_free_and_exit("Error\nCommand Two empty or not valid\n", cmd);
-	//charchr
 }
 
 static void	create_cmd(char **argv, t_cmd *cmd)
