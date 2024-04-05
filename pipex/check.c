@@ -6,24 +6,32 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:08:18 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/29 11:12:04 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/04 16:00:43 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	verif_arg_and_path(int argc, char **path)
+void	verif_arg_and_path(int argc, char **path, t_cmd *cmd)
 {
 	if (argc != 5)
 	{
 		free_tab(path);
-		ft_putstr_fd("Error\nNot good number of arg", STDERR_FILENO);
+		ft_putstr_fd("Error\nNot good number of arg\n", STDERR_FILENO);
+		if (cmd->infile != -1)
+			close(cmd->infile);
+		if (cmd->outfile != -1)
+			close(cmd->outfile);
 		exit (1);
 	}
 	if (!path)
 	{
 		free_tab(path);
-		ft_putstr_fd("Error\nPath not valid", STDERR_FILENO);
+		ft_putstr_fd("Error\nPath not valid\n", STDERR_FILENO);
+		if (cmd->infile != -1)
+			close(cmd->infile);
+		if (cmd->outfile != -1)
+			close(cmd->outfile);
 		exit (1);
 	}
 }

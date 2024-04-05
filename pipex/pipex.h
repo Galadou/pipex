@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/29 13:02:08 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:03:50 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ typedef struct s_cmd_and_files
 	char	**cmd2;
 
 	char	**path;
+	int		cmd1_error;
+	int		file1_error;
+	int		gp_not_malloc;
+	int		gp2_not_malloc;
 
 }t_cmd;
 
@@ -47,13 +51,20 @@ size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(const char *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
+int	charchr(char *str);
 
-void	verif_arg_and_path(int argc, char **path);
+void	verif_arg_and_path(int argc, char **path, t_cmd *cmd);
 char	*path_1_creator(t_cmd *cmd);
-char	*path_2_creator(char **cmd2, char *good_path);
+char	*path_2_creator(t_cmd *cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	family_process(char **envp, t_cmd *cmd);
+void	process_parent(int pipefd[2], t_cmd *cmd, char **envp);
+void	process_parent_cmd1_error(int pipefd[2], t_cmd *cmd, char **envp);
+void	child_process2(int pipefd[2], t_cmd *cmd, char **envp);
+void	family_process_end(t_cmd *cmd, int pipefd[2]);
+
 void	error_free_and_exit(char *error, t_cmd *cmd);
+void	init_struct(t_cmd *cmd);
 
 void	free_tab(char **tab);
 void	ultimate_free(t_cmd *cmd);

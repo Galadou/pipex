@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   more_function_2.c                                  :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:11 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/27 17:12:46 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/05 11:04:23 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,28 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	if (*pt_s1 != *pt_s2 && n > 0)
 		return (*pt_s1 - *pt_s2);
 	return (0);
+}
+
+int	charchr(char *str)
+{
+	int	x;
+
+	x = 0;
+	while (str[x])
+	{
+		if (str[x] == '/')
+			return (1);
+		x++;
+	}
+	return (0);
+}
+void	init_struct(t_cmd *cmd)
+{
+	cmd->cmd1 = NULL;
+	cmd->cmd2 = NULL;
+	cmd->good_path2 = NULL;
+	cmd->good_path = NULL;
+	cmd->file1_error = 0;
+	cmd->gp_not_malloc = 0;
+	cmd->gp2_not_malloc = 0;
 }

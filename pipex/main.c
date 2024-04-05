@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/03/29 13:01:32 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/04 16:51:04 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static char	**catch_path(char **envp)
 	char	**path;
 
 	y = 0;
+	path = NULL;
 	if (!envp)
 	{
 		ft_putstr_fd("Error pipex : Envp is empty\n", STDERR_FILENO);
@@ -38,34 +39,58 @@ static char	**catch_path(char **envp)
 	return (path);
 }
 
-static void	define_struct(t_cmd *cmd)
+static void	open_files(t_cmd *cmd, char **argv, int argc)
 {
-	cmd->cmd1 = NULL;
-	cmd->cmd2 = NULL;
-	cmd->good_path2 = NULL;
-	cmd->good_path = NULL;
+	init_struct(cmd);
+	if (argc == 5)
+	{
+		cmd->infile = open(argv[1], O_RDONLY);
+		if (cmd->infile <= 0)
+		{
+			ft_putstr_fd("Error\nInfile error\n", STDERR_FILENO);
+			cmd->file1_error = 1;
+		}
+		cmd->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cmd->outfile <= 0)
+		{
+			if (cmd->infile != -1)
+				close(cmd->infile);
+			if (cmd->path)
+				free_tab(cmd->path);
+			ft_putstr_fd("Error\nCan't open Outfile\n", STDERR_FILENO);
+			exit (1);
+		}
+	}
+	else
+	{
+		cmd->infile = -1;
+		cmd->outfile = -1;
+	}
 }
 
-static void	open_files(t_cmd *cmd, char **argv)
+static void	create_cmd_next(char **argv, t_cmd *cmd)
 {
-	define_struct(cmd);
-	cmd->infile = open(argv[1], O_RDONLY);
-	if (cmd->infile <= 0)
+	int	x;
+
+	cmd->cmd1 = ft_split(argv[2], ' ');
+	if (ft_strlen(cmd->cmd1[0]) == 0 || !cmd->cmd1)
 	{
-		if (cmd->path)
-			free_tab(cmd->path);
-		ft_putstr_fd("Error\nFile error (in main.c l:52)\n", STDERR_FILENO);
-		exit (1);
+		ft_putstr_fd("Error\nCommand One empty or not valid\n", STDERR_FILENO);
+		cmd->cmd1_error = 1;
 	}
-	cmd->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->outfile <= 0)
+	//if (charchr(cmd->cmd1[0]) == 1)
+	x = 0;
+	while (argv[3][x])
 	{
-		close(cmd->infile);
-		if (cmd->path)
-			free_tab(cmd->path);
-		ft_putstr_fd("Error\nCan't open file (main.c l:60)\n", STDERR_FILENO);
-		exit (1);
+		if ((argv[3][x] == ' ' && argv[3][x + 1] == ' ') ||
+			(argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' '))
+			error_free_and_exit("Error\nExtra space in command two\n", cmd);
+		x++;
 	}
+	cmd->cmd2 = ft_split(argv[3], ' ');
+	if (ft_strlen(cmd->cmd2[0]) == 0 || !cmd->cmd2)
+		error_free_and_exit("Error\nCommand Two empty or not valid\n", cmd);
+	//charchr
 }
 
 static void	create_cmd(char **argv, t_cmd *cmd)
@@ -73,27 +98,20 @@ static void	create_cmd(char **argv, t_cmd *cmd)
 	int	x;
 
 	x = 0;
-	while (argv[2][x])
+	cmd->cmd1_error = 0;
+	while (argv[2][x] && cmd->cmd1_error == 0)
 	{
 		if ((argv[2][x] == ' ' && argv[2][x + 1] == ' ') ||
 			(argv[2][0] == ' ' || argv[2][ft_strlen(argv[2]) - 1] == ' '))
-			error_free_and_exit("Error\nExtra space in command one", cmd);
+		{
+			ft_putstr_fd("Error\nExtra space in command one\n", STDERR_FILENO);
+			cmd->cmd1_error = 1;
+		}
 		x++;
 	}
-	cmd->cmd1 = ft_split(argv[2], ' ');
-	if (ft_strlen(cmd->cmd1[0]) == 0 || !cmd->cmd1)
-		error_free_and_exit("Error\nCommand One empty or not valid", cmd);
-	x = 0;
-	while (argv[3][x])
-	{
-		if ((argv[3][x] == ' ' && argv[3][x + 1] == ' ') ||
-			(argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' '))
-			error_free_and_exit("Error\nExtra space in command two", cmd);
-		x++;
-	}
-	cmd->cmd2 = ft_split(argv[3], ' ');
-	if (ft_strlen(cmd->cmd2[0]) == 0 || !cmd->cmd2)
-		error_free_and_exit("Error\nCommand Two empty or not valid", cmd);
+	if (cmd->file1_error)
+		cmd->cmd1_error = 1;
+	create_cmd_next(argv, cmd);
 }
 
 int	main(int argc, char **argv, char *envp[])
@@ -105,16 +123,22 @@ int	main(int argc, char **argv, char *envp[])
 		ft_putstr_fd("Error\nCannot find envp", STDERR_FILENO);
 		exit (1);
 	}
+	open_files(&cmd, argv, argc);
 	cmd.path = catch_path(envp);
-	verif_arg_and_path(argc, cmd.path);
-	open_files(&cmd, argv);
+	verif_arg_and_path(argc, cmd.path, &cmd);
 	create_cmd(argv, &cmd);
-	cmd.good_path = path_1_creator(&cmd);
-	if (!cmd.good_path)
-		error_free_and_exit("Error\nCommand in main.c l:89", &cmd);
-	cmd.good_path2 = path_2_creator(cmd.cmd2, cmd.good_path);
+	if (cmd.cmd1_error == 0)
+	{
+		cmd.good_path = path_1_creator(&cmd);
+		if (!cmd.good_path)
+		{
+			ft_putstr_fd("Error\nCommand one doest not exist\n", STDERR_FILENO);
+			cmd.cmd1_error = 1;
+		}
+	}
+	cmd.good_path2 = path_2_creator(&cmd);
 	if (!cmd.good_path2)
-		error_free_and_exit("Error\nCommand in main.c l:92", &cmd);
+		error_free_and_exit("Error\nCommand in main.c l:92\n", &cmd);
 	family_process(envp, &cmd);
 	return (0);
 }
