@@ -4,7 +4,7 @@ NAME		= pipex
 CFLAGS		= -Wall -Werror -Wextra -g
 
 SRC			= check.c\
-			process_family.c\
+			process_child.c\
 			process_parent.c\
 			ft_split.c\
 			main.c\

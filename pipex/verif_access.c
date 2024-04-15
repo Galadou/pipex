@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:33 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:18:56 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/07 19:03:47 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	path_error(t_cmd *cmd, char *good_path)
 {
 	if (good_path)
 		free(good_path);
-	ft_putstr_fd("Error\nCommand 1 does not exist\n", STDERR_FILENO);
 	cmd->cmd1_error = 1;
 }
 
@@ -54,7 +53,7 @@ char	*path_1_creator(t_cmd *cmd)
 	good_path = NULL;
 	if (charchr(cmd->cmd1[0]) == 1)
 		good_path = cmd_is_path(cmd->cmd1[0]);
-	if (good_path == NULL)
+	if (good_path == NULL && cmd->path)
 	{
 		while (cmd->path[i] && (!good_path))
 		{
@@ -81,7 +80,7 @@ char	*path_2_creator(t_cmd *cmd)
 	good_path = NULL;
 	if (charchr(cmd->cmd2[0]) == 1)
 		good_path = cmd_is_path(cmd->cmd2[0]);
-	if (good_path == NULL)
+	if (good_path == NULL && cmd->path)
 	{
 		while (cmd->path[i] && (!good_path))
 		{
@@ -92,7 +91,7 @@ char	*path_2_creator(t_cmd *cmd)
 		}
 		if (good_path)
 			free(good_path);
-		error_free_and_exit("Error\nCommand 2 does not exist\n", cmd);
+		error_free_and_exit("Error\nCommand two does not exist\n", cmd);
 	}
 	else
 		cmd->gp2_not_malloc = 1;

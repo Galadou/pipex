@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:19:48 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/15 12:08:12 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ static char	**catch_path(char **envp)
 
 	y = 0;
 	path = NULL;
-	if (!envp)
-	{
-		ft_putstr_fd("Error pipex : Envp is empty\n", STDERR_FILENO);
-		exit (1);
-	}
 	i = 0;
 	while (envp[y] != NULL)
 	{
@@ -81,8 +76,7 @@ static void	create_cmd_next(char **argv, t_cmd *cmd)
 	x = 0;
 	while (argv[3][x])
 	{
-		if ((argv[3][x] == ' ' && argv[3][x + 1] == ' ') ||
-			(argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' '))
+		if (argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' ')
 			error_free_and_exit("Error\nExtra space in command two\n", cmd);
 		x++;
 	}
@@ -99,8 +93,7 @@ static void	create_cmd(char **argv, t_cmd *cmd)
 	cmd->cmd1_error = 0;
 	while (argv[2][x] && cmd->cmd1_error == 0)
 	{
-		if ((argv[2][x] == ' ' && argv[2][x + 1] == ' ') ||
-			(argv[2][0] == ' ' || argv[2][ft_strlen(argv[2]) - 1] == ' '))
+		if ((argv[2][0] == ' ' || argv[2][ft_strlen(argv[2]) - 1] == ' '))
 		{
 			ft_putstr_fd("Error\nExtra space in command one\n", STDERR_FILENO);
 			cmd->cmd1_error = 1;
@@ -118,7 +111,7 @@ int	main(int argc, char **argv, char *envp[])
 
 	if (envp == NULL)
 	{
-		ft_putstr_fd("Error\nCannot find envp", STDERR_FILENO);
+		ft_putstr_fd("Error\nCannot find envp\n", STDERR_FILENO);
 		exit (1);
 	}
 	open_files(&cmd, argv, argc);
@@ -130,13 +123,13 @@ int	main(int argc, char **argv, char *envp[])
 		cmd.good_path = path_1_creator(&cmd);
 		if (!cmd.good_path)
 		{
-			ft_putstr_fd("Error\nCommand one doest not exist\n", STDERR_FILENO);
+			ft_putstr_fd("Error\nCommand one not valid\n", STDERR_FILENO);
 			cmd.cmd1_error = 1;
 		}
 	}
 	cmd.good_path2 = path_2_creator(&cmd);
 	if (!cmd.good_path2)
-		error_free_and_exit("Error\nCommand in main.c l:92\n", &cmd);
+		error_free_and_exit("Error\nCommand two not valid\n", &cmd);
 	family_process(envp, &cmd);
 	return (0);
 }

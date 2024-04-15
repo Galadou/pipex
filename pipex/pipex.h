@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:19:33 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/15 18:02:21 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ char	*path_2_creator(t_cmd *cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	family_process(char **envp, t_cmd *cmd);
 void	process_parent(int pipefd[2], t_cmd *cmd, char **envp);
-void	process_parent_cmd1_error(int pipefd[2], t_cmd *cmd, char **envp);
-void	child_process2(int pipefd[2], t_cmd *cmd, char **envp);
-void	family_process_end(t_cmd *cmd, int pipefd[2]);
+void	first_child(int pipefd[2], t_cmd *cmd, char **envp);
+void	second_child(int pipefd[2], t_cmd *cmd, char **envp);
 
 void	error_free_and_exit(char *error, t_cmd *cmd);
 void	init_struct(t_cmd *cmd);

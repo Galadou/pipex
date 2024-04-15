@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:48 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:03:37 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/15 14:19:51 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	free_tab(char **tab)
 
 void	ultimate_free(t_cmd *cmd)
 {
-	if (cmd->infile != -1)
+	if (cmd->infile != -1 && cmd->infile)
 		close(cmd->infile);
-	if (cmd->outfile != -1)
+	if (cmd->outfile != -1 && cmd->outfile)
 		close(cmd->outfile);
 	if (cmd->path && cmd->path != NULL)
 		free_tab(cmd->path);

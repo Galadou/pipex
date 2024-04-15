@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:11 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/05 11:19:23 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/15 18:29:45 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+static int	ft_isalpha(int c)
+{
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+		return (1);
+	else
+		return (0);
+}
+
 int	charchr(char *str)
 {
 	int	x;
@@ -74,7 +82,7 @@ int	charchr(char *str)
 	x = 0;
 	while (str[x])
 	{
-		if (str[x] == '/')
+		if (str[x] == '/' && ft_isalpha(str[x + 1]) == 1)
 			return (1);
 		x++;
 	}
