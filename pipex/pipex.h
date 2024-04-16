@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/15 18:02:21 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 13:52:19 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		charchr(char *str);
 
 void	verif_arg_and_path(int argc, char **path, t_cmd *cmd);
+int		is_only_slash(char *str);
 char	*path_1_creator(t_cmd *cmd);
 char	*path_2_creator(t_cmd *cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
