@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:08:18 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/16 14:31:44 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 19:35:00 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,64 @@ void	error_free_and_exit(char *error, t_cmd *cmd)
 	exit (1);
 }
 
-int	is_only_slash(char *str)
+static size_t count_slash(char *str)
+{
+	size_t	nb_slash;
+	int		i;
+
+	i = 0;
+	nb_slash = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			nb_slash++;
+		i++;
+	}
+	return (nb_slash);
+}
+
+int	is_only_slash(char *str, int c, t_cmd *cmd)
 {
 	size_t	i;
-	size_t	j;
 	size_t	nb_slash;
 
-	j = 0;
-	nb_slash = 0;
-	while (str[j])
-	{
-		if (str[j] == '/')
-			nb_slash++;
-		j++;
-	}
+	i = 0;
+	nb_slash = count_slash(str);
 	if (str[0] == '/')
 	{
 		i = 0;
 		while (str[i] == '/')
 			i++;
-		if (i == ft_strlen(str) || (i > 0 && i == nb_slash))
+		if (i == ft_strlen(str) || (i > 0 && i == nb_slash) || str[ft_strlen(str) - 1] == '/')
+		{
+			if (c == 1)
+				cmd->cmd1_error = 1;
+			if (c == 2)
+				cmd->cmd2_error = 1;
 			return (1);
+		}
 	}
 	return (0);
+}
+
+void	path_creator(t_cmd *cmd)
+{
+	if (cmd->cmd1_error == 0)
+	{
+		cmd->good_path = path_1_creator(cmd);
+		if (!cmd->good_path)
+		{
+			ft_putstr_fd("Error\nCommand one not valid\n", STDERR_FILENO);
+			cmd->cmd1_error = 1;
+		}
+	}
+	if (cmd->cmd2_error == 0)
+	{
+		cmd->good_path2 = path_2_creator(cmd);
+		if (!cmd->good_path2)
+		{
+			ft_putstr_fd("Error\nCommand two not valid\n", STDERR_FILENO);
+			cmd->cmd2_error = 1;
+		}
+	}
 }

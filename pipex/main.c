@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/15 12:08:12 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 19:59:29 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ static void	open_files(t_cmd *cmd, char **argv, int argc)
 		{
 			if (cmd->infile != -1)
 				close(cmd->infile);
-			if (cmd->path)
-				free_tab(cmd->path);
 			ft_putstr_fd("Error\nCan't open Outfile\n", STDERR_FILENO);
-			exit (1);
+			cmd->file2_error = 1;
 		}
 	}
 	else
@@ -74,15 +72,23 @@ static void	create_cmd_next(char **argv, t_cmd *cmd)
 		cmd->cmd1_error = 1;
 	}
 	x = 0;
-	while (argv[3][x])
+	while (argv[3][x] && cmd->cmd2_error == 0)
 	{
 		if (argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' ')
-			error_free_and_exit("Error\nExtra space in command two\n", cmd);
+		{
+			ft_putstr_fd("Error\nExtra space in command one\n", STDERR_FILENO);
+			cmd->cmd2_error = 1;
+		}
 		x++;
 	}
+	if (cmd->file2_error)
+		cmd->cmd2_error = 1;
 	cmd->cmd2 = ft_split(argv[3], ' ');
 	if (ft_strlen(cmd->cmd2[0]) == 0 || !cmd->cmd2)
-		error_free_and_exit("Error\nCommand Two empty or not valid\n", cmd);
+	{
+		ft_putstr_fd("Error\nCommand Two empty or not valid\n", STDERR_FILENO);
+		cmd->cmd2_error = 1;
+	}
 }
 
 static void	create_cmd(char **argv, t_cmd *cmd)
@@ -91,6 +97,7 @@ static void	create_cmd(char **argv, t_cmd *cmd)
 
 	x = 0;
 	cmd->cmd1_error = 0;
+	cmd->cmd2_error = 0;
 	while (argv[2][x] && cmd->cmd1_error == 0)
 	{
 		if ((argv[2][0] == ' ' || argv[2][ft_strlen(argv[2]) - 1] == ' '))
@@ -118,18 +125,7 @@ int	main(int argc, char **argv, char *envp[])
 	cmd.path = catch_path(envp);
 	verif_arg_and_path(argc, cmd.path, &cmd);
 	create_cmd(argv, &cmd);
-	if (cmd.cmd1_error == 0)
-	{
-		cmd.good_path = path_1_creator(&cmd);
-		if (!cmd.good_path)
-		{
-			ft_putstr_fd("Error\nCommand one not valid\n", STDERR_FILENO);
-			cmd.cmd1_error = 1;
-		}
-	}
-	cmd.good_path2 = path_2_creator(&cmd);
-	if (!cmd.good_path2)
-		error_free_and_exit("Error\nCommand two not valid\n", &cmd);
+	path_creator(&cmd);
 	family_process(envp, &cmd);
 	return (0);
 }

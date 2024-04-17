@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/16 13:52:19 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 19:35:23 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ typedef struct s_cmd_and_files
 
 	char	**path;
 	int		cmd1_error;
+	int		cmd2_error;
+
 	int		file1_error;
+	int		file2_error;
 	int		gp_not_malloc;
 	int		gp2_not_malloc;
 
@@ -54,7 +57,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		charchr(char *str);
 
 void	verif_arg_and_path(int argc, char **path, t_cmd *cmd);
-int		is_only_slash(char *str);
+int		is_only_slash(char *str, int c, t_cmd *cmd);
+void	path_creator(t_cmd *cmd);
 char	*path_1_creator(t_cmd *cmd);
 char	*path_2_creator(t_cmd *cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

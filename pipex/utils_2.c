@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:11 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/15 18:29:45 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 19:02:23 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	init_struct(t_cmd *cmd)
 	cmd->good_path2 = NULL;
 	cmd->good_path = NULL;
 	cmd->file1_error = 0;
+	cmd->file2_error = 0;
 	cmd->gp_not_malloc = 0;
 	cmd->gp2_not_malloc = 0;
+	cmd->path = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:08:36 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/15 18:03:36 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/16 19:24:38 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@ void	process_parent(int pipefd[2], t_cmd *cmd, char **envp)
 	pid_t	pid;
 
 	close(pipefd[1]);
-	if (dup2(pipefd[0], STDIN_FILENO) == -1)
-		error_free_and_exit("Error\nFonction dup2 error\n", cmd);
-	pid = fork();
-	if (pid == -1)
-		error_free_and_exit("Error\nFork at process_parent.c\n", cmd);
-	else if (pid == 0)
-		second_child(pipefd, cmd, envp);
-	else
+	if (cmd->cmd2_error == 0)
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		while (waitpid(-1, NULL, 0) != -1)
-			continue ;
-		ultimate_free(cmd);
+		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+			error_free_and_exit("Error\nFonction dup2 error\n", cmd);
+		pid = fork();
+		if (pid == -1)
+			error_free_and_exit("Error\nFork at process_parent.c\n", cmd);
+		else if (pid == 0)
+			second_child(pipefd, cmd, envp);
 	}
+	close(pipefd[0]);
+	close(pipefd[1]);
+	while (waitpid(-1, NULL, 0) != -1)
+		continue ;
+	ultimate_free(cmd);
 }
