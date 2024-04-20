@@ -1,7 +1,7 @@
 INCLUDE		= pipex.h
 COMP		= gcc
 NAME		= pipex
-CFLAGS		= -Wall -Werror -Wextra -g
+CFLAGS		= -Wall -Werror -Wextra
 
 SRC			= check.c\
 			process_child.c\

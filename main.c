@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:21 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/16 19:59:29 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/20 17:12:08 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ static void	open_files(t_cmd *cmd, char **argv, int argc)
 		cmd->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (cmd->outfile <= 0)
 		{
-			if (cmd->infile != -1)
-				close(cmd->infile);
-			ft_putstr_fd("Error\nCan't open Outfile\n", STDERR_FILENO);
+			ft_putstr_fd("Error\nOutfile error\n", STDERR_FILENO);
 			cmd->file2_error = 1;
 		}
 	}
@@ -65,28 +63,22 @@ static void	create_cmd_next(char **argv, t_cmd *cmd)
 {
 	int	x;
 
-	cmd->cmd1 = ft_split(argv[2], ' ');
-	if (ft_strlen(cmd->cmd1[0]) == 0 || !cmd->cmd1)
-	{
-		ft_putstr_fd("Error\nCommand One empty or not valid\n", STDERR_FILENO);
-		cmd->cmd1_error = 1;
-	}
 	x = 0;
 	while (argv[3][x] && cmd->cmd2_error == 0)
 	{
 		if (argv[3][0] == ' ' || argv[3][ft_strlen(argv[3]) - 1] == ' ')
 		{
-			ft_putstr_fd("Error\nExtra space in command one\n", STDERR_FILENO);
+			if (cmd->file2_error == 0)
+				ft_putstr_fd("Error\nExtra space in cmd two\n", STDERR_FILENO);
 			cmd->cmd2_error = 1;
 		}
 		x++;
 	}
-	if (cmd->file2_error)
-		cmd->cmd2_error = 1;
 	cmd->cmd2 = ft_split(argv[3], ' ');
 	if (ft_strlen(cmd->cmd2[0]) == 0 || !cmd->cmd2)
 	{
-		ft_putstr_fd("Error\nCommand Two empty or not valid\n", STDERR_FILENO);
+		if (cmd->file2_error == 0 && cmd->cmd2_error == 0)
+			ft_putstr_fd("Error\nCmd Two empty or not valid\n", STDERR_FILENO);
 		cmd->cmd2_error = 1;
 	}
 }
@@ -102,13 +94,19 @@ static void	create_cmd(char **argv, t_cmd *cmd)
 	{
 		if ((argv[2][0] == ' ' || argv[2][ft_strlen(argv[2]) - 1] == ' '))
 		{
-			ft_putstr_fd("Error\nExtra space in command one\n", STDERR_FILENO);
+			if (cmd->file1_error == 0)
+				ft_putstr_fd("Error\nExtra space in cmd one\n", STDERR_FILENO);
 			cmd->cmd1_error = 1;
 		}
 		x++;
 	}
-	if (cmd->file1_error)
+	cmd->cmd1 = ft_split(argv[2], ' ');
+	if (ft_strlen(cmd->cmd1[0]) == 0 || !cmd->cmd1)
+	{
+		if (cmd->file1_error == 0 && cmd->cmd1_error == 0)
+			ft_putstr_fd("Error\nCmd One empty or not valid\n", STDERR_FILENO);
 		cmd->cmd1_error = 1;
+	}
 	create_cmd_next(argv, cmd);
 }
 

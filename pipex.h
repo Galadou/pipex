@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:06:55 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/16 19:35:23 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/20 16:13:05 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void	process_parent(int pipefd[2], t_cmd *cmd, char **envp);
 void	first_child(int pipefd[2], t_cmd *cmd, char **envp);
 void	second_child(int pipefd[2], t_cmd *cmd, char **envp);
 
-void	error_free_and_exit(char *error, t_cmd *cmd);
+void	error_free_and_exit(char *error, t_cmd *cmd, int pipefd[2]);
 void	init_struct(t_cmd *cmd);
 
 void	free_tab(char **tab);
-void	ultimate_free(t_cmd *cmd);
+void	ultimate_free(t_cmd *cmd, int pipefd[2]);
 
 #endif

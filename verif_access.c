@@ -6,7 +6,7 @@
 /*   By: gmersch <gmersch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 18:07:33 by gmersch           #+#    #+#             */
-/*   Updated: 2024/04/16 19:42:40 by gmersch          ###   ########.fr       */
+/*   Updated: 2024/04/20 16:06:52 by gmersch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ char	*path_1_creator(t_cmd *cmd)
 
 	i = 0;
 	good_path = NULL;
-	if (access(cmd->cmd1[0], X_OK) == 0 && is_only_slash(cmd->cmd1[0], 1, cmd) == 0)
+	if (access(cmd->cmd1[0], X_OK) == 0 && \
+		is_only_slash(cmd->cmd1[0], 1, cmd) == 0)
 		good_path = cmd_is_path(cmd->cmd1[0]);
 	if (good_path == NULL && cmd->path)
 	{
 		while (cmd->path[i] && (!good_path))
 		{
-			//if (good_path)
-				//free(good_path);
 			if (is_only_slash(cmd->cmd1[0], 1, cmd) == 0)
 				good_path = verif_access(cmd->cmd1[0], cmd->path, i);
 			if (good_path)
@@ -74,22 +73,19 @@ char	*path_2_creator(t_cmd *cmd)
 
 	i = 0;
 	good_path = NULL;
-	if (access(cmd->cmd2[0], X_OK) == 0 && is_only_slash(cmd->cmd2[0], 2, cmd) == 0)
+	if (access(cmd->cmd2[0], X_OK) == 0 && \
+		is_only_slash(cmd->cmd2[0], 2, cmd) == 0)
 		good_path = cmd_is_path(cmd->cmd2[0]);
 	if (good_path == NULL && cmd->path)
 	{
 		while (cmd->path[i] && (!good_path))
 		{
-			if (good_path)
-				free(good_path);
 			if (is_only_slash(cmd->cmd2[0], 2, cmd) == 0)
 				good_path = verif_access(cmd->cmd2[0], cmd->path, i);
 			if (good_path)
 				return (good_path);
 			i++;
 		}
-		if (good_path)
-			free(good_path);
 		cmd->cmd2_error = 1;
 	}
 	else
